@@ -314,7 +314,7 @@ int CreateJSON( std::string & json, std::vector< std::string > & files )
 			//
 			iResult = Encode( chars, file.c_str(), state ) ;
 
-			encoded.push_back( chars ) ;
+			encoded.push_back( chars.c_str() ) ;
 
 		} // for ... file
 
@@ -324,7 +324,7 @@ int CreateJSON( std::string & json, std::vector< std::string > & files )
 			break ;
 		}
 
-		json = fmt::format( "{{ \"idTransaccion\" : \"{:016x}\", \"fotoA\" : {{ \"tipo\" : 1, \"data\" : \"{}\" }}, \"fotoB\" : {{ \"tipo\" : 2, \"data\" : \"{}\" }} }}" ENDL, XXH64_digest( state ), encoded[ 0 ], encoded[ 2 ] ) ;
+		json = fmt::format( "{{ \"idTransaccion\" : \"{:016x}\", \"fotoA\" : {{ \"tipo\" : 1, \"data\" : \"{}\" }}, \"fotoB\" : {{ \"tipo\" : 2, \"data\" : \"{}\" }} }}" ENDL, XXH64_digest( state ), encoded[ 0 ], encoded[ 1 ] ) ;
 
 	}
 	while( false ) ;
