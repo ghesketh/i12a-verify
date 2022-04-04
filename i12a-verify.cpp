@@ -352,32 +352,14 @@ int main( int iArgs, char * pArgs[] )
 		{
 			auto s = strlen( pArgs[ iArg ] ) ;
 			//
-			if( s < 2 )
+			if( s < 4 )
 			{
 				continue ;
 			}
 
-			auto c = pArgs[ iArg ][ 0 ] ;
-
-			if( '-' == c || '/' == c )
+			if( 0 == _strnicmp( "http", pArgs[ iArg ], 4 ) )
 			{
-				switch( pArgs[ iArg ][ 1 ] )
-				{
-					// URI
-					//
-					case 'U' :
-					case 'u':
-						if( iArgs > ++( iArg ) )
-						{
-							uri.assign( pArgs[ iArg ] ) ;
-						}
-						break ;
-
-					default:
-						break ;
-
-				}
-
+				uri.assign( pArgs[ iArg ] ) ;
 				continue ;
 			}
 
