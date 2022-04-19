@@ -17,6 +17,14 @@
 
 #include "base64.h"
 
+#ifdef _WIN32
+#define STRNICMP _strnicmp
+
+#else
+#define STRNICMP strncasecmp
+
+#endif
+
 
 int Encode( std::string & chars, const char * filename, XXH64_state_t * state = nullptr )
 {
@@ -357,7 +365,7 @@ int main( int iArgs, char * pArgs[] )
 				continue ;
 			}
 
-			if( 0 == _strnicmp( "http", pArgs[ iArg ], 4 ) )
+			if( 0 == STRNICMP( "http", pArgs[ iArg ], 4 ) )
 			{
 				uri.assign( pArgs[ iArg ] ) ;
 				continue ;
