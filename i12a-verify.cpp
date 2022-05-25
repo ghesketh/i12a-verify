@@ -26,13 +26,6 @@
 #endif
 
 
-static struct
-{
-	char Authorization[ 4096 ] = { 0 } ;
-
-} GLOBAL ;
-
-
 static int Encode( std::string & chars, const char * filename, XXH64_state_t * state = nullptr )
 {
 	int iResult = 0 ;
