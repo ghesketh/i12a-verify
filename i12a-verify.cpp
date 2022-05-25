@@ -26,7 +26,14 @@
 #endif
 
 
-int Encode( std::string & chars, const char * filename, XXH64_state_t * state = nullptr )
+static struct
+{
+	char Authorization[ 4096 ] = { 0 } ;
+
+} GLOBAL ;
+
+
+static int Encode( std::string & chars, const char * filename, XXH64_state_t * state = nullptr )
 {
 	int iResult = 0 ;
 
@@ -68,7 +75,7 @@ int Encode( std::string & chars, const char * filename, XXH64_state_t * state = 
 } // Encode()
 
 
-int SendJSON( std::string & json, const char * uri )
+static int SendJSON( std::string & json, const char * uri )
 {
 	int iResult = 0 ;
 
@@ -125,6 +132,33 @@ int SendJSON( std::string & json, const char * uri )
 		{
 			iResult = __LINE__ ;
 			break ;
+		}
+
+		std::string Authorization ;
+
+#ifdef _WIN32
+		char bearer[ 4096 ] = { 0 } ;
+
+		iResult = GetEnvironmentVariableA( "Bearer", bearer, sizeof( bearer ) ) ;
+
+		if( 0 == iResult )
+
+#else
+		char * bearer = getenv( "Authorization" ) ;
+
+		if( nulltpr != bearer )
+#endif
+		{
+			Authorization = "Bearer " ;
+			Authorization += bearer ;
+
+			iResult = nng_http_req_add_header( http_req, "Authorization", Authorization.c_str() ) ;
+			//
+			if( 0 != iResult )
+			{
+				iResult = __LINE__ ;
+				break ;
+			}
 		}
 
 		iResult = nng_http_req_set_method( http_req, "POST" ) ;
@@ -268,7 +302,7 @@ int SendJSON( std::string & json, const char * uri )
 } // SendJSON
 
 
-int ReadJSON( std::string & json, const char * filename )
+static int ReadJSON( std::string & json, const char * filename )
 {
 	int iResult = 0 ;
 
@@ -292,7 +326,7 @@ int ReadJSON( std::string & json, const char * filename )
 } // ReadJSON()
 
 
-int CreateJSON( std::string & json, std::vector< std::string > & files )
+static int CreateJSON( std::string & json, std::vector< std::string > & files )
 {
 	int iResult = 0 ;
 
