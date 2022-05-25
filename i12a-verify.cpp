@@ -146,7 +146,7 @@ static int SendJSON( std::string & json, const char * uri )
 #else
 		char * bearer = getenv( "Authorization" ) ;
 
-		if( nulltpr != bearer )
+		if( nullptr != bearer )
 #endif
 		{
 			Authorization = "Bearer " ;
