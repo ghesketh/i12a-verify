@@ -134,7 +134,7 @@ static int SendJSON( std::string & json, const char * uri )
 
 		iResult = GetEnvironmentVariableA( "Bearer", bearer, sizeof( bearer ) ) ;
 
-		if( 0 == iResult )
+		if( 0 != iResult )
 
 #else
 		char * bearer = getenv( "Authorization" ) ;
